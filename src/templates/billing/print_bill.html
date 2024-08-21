@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - Bill No {{ bill.id }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invoice-header h1 {
+            margin: 0;
+            font-size: 2em;
+            color: #333;
+        }
+
+        .invoice-header p {
+            margin: 5px 0;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .invoice-details p {
+            margin: 0;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .invoice-items table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .invoice-items table th,
+        .invoice-items table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .invoice-items table th {
+            background-color: #f0f0f0;
+        }
+
+        .invoice-items table td {
+            background-color: #fff;
+        }
+
+        .invoice-items table tfoot tr td {
+            font-weight: bold;
+        }
+
+        @media print {
+            .container {
+                padding: 0;
+                margin: 0;
+                border: none;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="invoice-header">
+            <h1>Shraddha Gift and Toys</h1>
+            <p>Invoice</p>
+            <p>Bill No: {{ bill.id }}</p>
+            <p>Date: {{ bill.date | date:"d M, Y" }}</p>
+        </div>
+
+        <div class="invoice-details">
+            <p><strong>Bill To:</strong>
+                {% if bill.customer_name %}
+                {{ bill.customer_name }}
+                {% else %}
+                Walk-in Customer
+                {% endif %}
+                ({% if bill.mobile_number %}
+                {{ bill.mobile_number }}
+                {% else %}
+                -
+                {% endif %})
+            </p>
+        </div>
+
+        {% if bill.items %}
+        <div class="invoice-items">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price (₹)</th>
+                        <th>Total (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in bill.items.all %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.get_rate }}</td>
+                        <td>{{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">Total Amount</td>
+                        <td>₹ {{ bill.total_amount }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (!isMobile()) {
+            window.onafterprint = function() {
+                window.close();
+            };
+        }
+
+        window.print();
+    </script>
+</body>
+
+</html>

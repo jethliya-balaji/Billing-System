@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "dev": "tailwindcss -i src/static/src/tailwind-input.css -o src/static/css/tailwind-output.css --watch"
+  },
+  "devDependencies": {
+    "daisyui": "^4.12.10",
+    "tailwindcss": "^3.4.9"
+  }
+}

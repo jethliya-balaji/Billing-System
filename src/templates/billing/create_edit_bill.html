@@ -1,0 +1,112 @@
+{% extends "billing/base.html" %}
+{% load widget_tweaks %}
+{% block title %}
+{% if request.resolver_match.url_name == 'create_bill' %}
+Create Bill
+{% else %}
+Edit Bill
+{% endif %}
+{% endblock %}
+
+
+{% block body %}
+{% include "billing/partials/navbar.html" %}
+
+<div class="px-4 py-6">
+    <div class="max-w-6xl mx-auto bg-base-200 p-6 rounded-lg">
+        <div class="flex justify-between items-center mb-6 text-xl flex-wrap-reverse">
+            <div>
+                <p>Bill ID: {{ bill.id }}</p>
+                <p>Date: {{ bill.date | date:"d M, Y" }}</p>
+            </div>
+            <p class="text-3xl hidden lg:block">Total: ₹ <strong><span
+                        id="bill-total">{{bill.total_amount}}</span></strong></p>
+        </div>
+
+        <div class="divider">Customer Details<div id="bill_form_errors"></div>
+        </div>
+
+        <!-- Main Bill Form -->
+        {% if request.resolver_match.url_name == 'create_bill' %}
+        <form class="mb-6" hx-post="{% url 'create_bill' %}" hx-target="#bill_form_errors" hx-swap="innerHTML" hx-trigger="change, keyup delay:1000ms">
+            {% else %}
+            <form class="mb-6" hx-post="{% url 'edit_bill' bill.id %}" hx-target="#bill_form_errors" hx-swap="innerHTML" hx-trigger="change, keyup delay:1000ms">
+                {% endif %}
+                {% csrf_token %}
+                <div class="flex flex-col md:flex-row md:items-center md:space-x-4">
+                    <div class="flex-grow mb-4 md:mb-0">
+                        {% render_field bill_form.customer_name class+="input input-bordered w-full" placeholder="Customer Name/Shop Name" %}
+                    </div>
+                    <div class="flex-grow mb-4 md:mb-0">
+                        {% render_field bill_form.mobile_number class+="input input-bordered w-full" placeholder="Mobile Number" %}
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="divider">Items</div>
+            <!-- Add Item Form -->
+            <form hx-post="{% url 'add_item' bill.id %}" hx-target="#bill_items" hx-swap="innerHTML"
+                hx-on="htmx:afterRequest:clearFields()" id="bill_item_form" class="mb-6">
+                <div id="bill_item_form_errors" class="text-right mb-2"></div>
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% render_field bill_item_form.product class+="select select-bordered w-full" %}
+                    {% render_field bill_item_form.custom_rate class+="input input-bordered w-full" placeholder="Rate"%}
+                    {% render_field bill_item_form.quantity class+="input input-bordered w-full" placeholder="Quantity"%}
+                    <input type="submit" value="Add Item" class="btn btn-outline btn-primary w-full text-lg">
+                </div>
+            </form>
+
+            <div class="divider">Bill Items - Total: ₹<span id="bill-total-footer">{{ bill.total_amount }}</span></div>
+            <!-- Items List Using Divs Instead of Table -->
+            <div class="space-y-4 text-xl">
+                <!-- Header -->
+                <div class="hidden md:grid md:grid-cols-5 font-bold p-2 rounded-md">
+                    <div>Item</div>
+                    <div>Quantity</div>
+                    <div>Price</div>
+                    <div>Total</div>
+                    <div></div>
+                </div>
+
+                <!-- Items -->
+                <div id="bill_items" class="space-y-2">
+                    {% for item in bill.items.all %}
+                    <div
+                        class="p-2 bg-base-100 rounded-md shadow-md flex flex-col md:grid md:grid-cols-5 md:gap-2 items-center">
+                        <div class="w-full md:w-auto p-2">
+                            <p class="flex justify-between"><span
+                                    class="md:hidden font-bold">Item:</span>{{item.product.name }}</p>
+                        </div>
+                        <div class="w-full md:w-auto p-2">
+                            <p class="flex justify-between"><span
+                                    class="md:hidden font-bold">Quantity:</span>{{item.quantity }}</p>
+                        </div>
+                        <div class="w-full md:w-auto p-2">
+                            <p class="flex justify-between"><span
+                                    class="md:hidden font-bold">Price:</span>{{item.get_rate}}</p>
+                        </div>
+                        <div class="w-full md:w-auto p-2">
+                            <p class="flex justify-between"><span class="md:hidden font-bold">Total:</span>{{item.total}}
+                            </p>
+                        </div>
+                        <div class="w-full md:w-auto mt-2 md:mt-0 text-right">
+                            <button class="btn btn-sm btn-error text-xl w-full md:w-auto"
+                                hx-delete="{% url 'delete_item' item.id %}" hx-target="#bill_items">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="flex justify-between">
+                    <a class="btn btn-primary m-2" href="{% url 'print_bill' bill.id %}" target="_blank">Print</a>
+                    <a class="btn btn-accent m-2" href="{% url 'view_bill' bill.id %}">Save</a>
+                </div>
+            </div>
+    </div>
+</div>
+
+{% endblock %}

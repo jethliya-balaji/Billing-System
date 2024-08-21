@@ -1,0 +1,16 @@
+{% extends "billing/base.html" %}
+
+{% block title %}403 Forbidden{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-md w-full px-6 py-8 bg-white shadow-md rounded-lg">
+        <h1 class="text-4xl font-bold text-red-600 mb-4">403 - Access Denied</h1>
+        <p class="text-gray-700 mb-4">Sorry, you do not have permission to access this page.</p>
+        <p class="text-gray-600">Please contact the administrator for further assistance.</p>
+        <a href="/" class="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out">
+            Return to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "billing/base.html" %}
+{% block title %}
+Bill No {{ bill.id }}
+{% endblock %}
+
+{% block body %}
+{% include "billing/partials/navbar.html" %}
+
+<div class="px-4 py-6">
+    <div class="max-w-6xl mx-auto bg-base-200 p-6 rounded-lg">
+        <div class="flex justify-between mb-6 text-lg flex-wrap">
+            <div>
+                <p>Bill ID: {{ bill.id }}</p>
+                <p>Date: {{ bill.date | date:"d M, Y" }}</p>
+                <p>Bill By: {{ bill.billed_by |capfirst}}</p>
+                <p>Bill To: {% if bill.customer_name %}{{ bill.customer_name }} ({{ bill.mobile_number }}){% else %}---{% endif %}</p>
+            </div>
+            <div>
+                <p class="text-xl hidden lg:block">Total: ₹ <strong><span id="bill-total">{{bill.total_amount}}</span></strong></p>
+                <div class="flex space-x-2 mt-2">
+                    <a class="btn btn-sm btn-accent" href="{% url 'print_bill' bill.id %}" target="_blank">Print</a>
+                    <a class="btn btn-sm btn-outline btn-primary" href="{% url 'edit_bill' bill.id %}">Edit</a>
+                    <button class="btn btn-sm btn-outline btn-error" onclick="document.getElementById('modal-{{ bill.id }}').showModal()">Delete</button>
+                    <dialog id="modal-{{ bill.id }}" class="modal">
+                        <div class="modal-box">
+                            <h2 class="text-lg font-bold">Are you sure?</h2>
+                            <p class="py-4">The {{ bill }} will be deleted permanently. This action cannot be undone.</p>
+                            <div class="modal-action">
+                                <form>
+                                    {% csrf_token %}
+                                    <a hx-delete="{% url 'delete_bill' bill.id %}" class="btn btn-sm btn-outline btn-error m-2">Delete</a>
+                                    <a class="btn btn-sm btn-outline" onclick="document.getElementById('modal-{{ bill.id }}').close()">Cancel</a>
+                                </form>
+                            </div>
+                        </div>
+                    </dialog>
+                </div>
+            </div>
+        </div>
+
+        {% if bill.items %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-base-300">
+                <thead class="bg-base-200">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium uppercase">Item</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium uppercase">Quantity</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium uppercase">Price</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium uppercase">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-base-100 divide-y divide-base-300">
+                    {% for item in bill.items.all %}
+                    <tr class="hover:bg-base-200 transition-colors">
+                        <td class="px-4 py-2">{{ item.product.name }}</td>
+                        <td class="px-4 py-2">{{ item.quantity }}</td>
+                        <td class="px-4 py-2">{{ item.get_rate }}</td>
+                        <td class="px-4 py-2">{{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-base-200">
+                    <tr id="bill-total-row">
+                        <td class="px-4 py-2"></td>
+                        <td class="px-4 py-2"></td>
+                        <td class="px-4 py-2 font-bold">Total</td>
+                        <td class="px-4 py-2 font-bold">{{ bill.total_amount }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

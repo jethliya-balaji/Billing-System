@@ -1,0 +1,54 @@
+{% for bill in bills %}
+<tr class="hover:bg-base-200 transition-colors">
+    <td class="px-4 py-2">
+        <a href="{% url 'view_bill' bill.id %}">
+            {{bill}}
+        </a>
+    </td>
+    <td class="px-4 py-2">{{bill.customer_name}}</td>
+    <td class="px-4 py-2">{{bill.mobile_number}}</td>
+    <td class="px-4 py-2">{{bill.date | date:"d M, Y"}}</td>
+    <td class="px-4 py-2">{{bill.billed_by | title}}</td>
+    <td class="px-4 py-2 text-left flex flex-row justify-around">
+        <a class="btn btn-sm btn-outline btn-accent m-2" href="{% url 'view_bill' bill.id %}">View</a>
+        <a class="btn btn-sm btn-outline btn-primary m-2" href="{% url 'edit_bill' bill.id %}">Edit</a>
+        <a class="btn btn-sm btn-outline btn-accent m-2" href="{% url 'print_bill' bill.id %}" target="_blank">Print</a>
+        {% if perms.billing.delete_bill %}
+        <button class="btn btn-sm btn-outline btn-error m-2"
+            onclick="document.getElementById('modal-{{ bill.id }}').showModal()">Delete</button>
+        <dialog id="modal-{{ bill.id }}" class="modal">
+            <div class="modal-box">
+                <h class="text-lg font-bold">Are you sure?</h>
+                <p class="py-4">The {{ bill }} will be deleted permanently. This action
+                    cannot be undone.</p>
+                <div class="modal-action">
+                    <form>
+                        {% csrf_token %}
+                        <a hx-delete="{% url 'delete_bill' bill.id %}" hx-target="#bill-list" hx-swap="innerHTML" hx-indicator="#delete-loading-{{ bill.id }}"
+                            class="btn btn-sm btn-error">Delete</a>
+                        <a class="btn btn-sm btn-outline"
+                            onclick="document.getElementById('modal-{{ bill.id }}').close()">Cancel</a>
+                    </form>
+                </div>
+            </div>
+            <div id="delete-loading-{{ bill.id }}" class="htmx-indicator">Deleting...</div>
+        </dialog>
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="6" class="text-center py-4 text-2xl">No bills found.</td>
+</tr>
+{% endfor %}
+
+<!-- load more bills with filter -->
+{% if bills.has_next %}
+<tr id="load-more-bills">
+    <td colspan="6" class="text-center py-4">
+        <button class="btn btn-sm btn-outline btn-primary"
+            hx-get="{{ url_with_filters }}page={{bills.next_page_number}}" hx-target="#load-more-bills"
+            hx-swap="outerHTML">Load More</button>
+    </td>
+</tr>
+{% endif %}

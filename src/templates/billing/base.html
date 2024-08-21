@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="corporate" class="font-mono">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} | Shraddha Gift and Toys</title>
+    <script src="{% static 'htmx.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<body>
+    <div id="message-container">
+        {% include "billing/partials/messages.html" %}
+    </div>
+
+    {% block body %}
+    {% endblock %}
+
+    <script>
+        // add CSRF token to the request headers for htmx requests
+        document.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+
+        // Listen for HTMX afterOnLoad event to update the errors if any
+        document.addEventListener('htmx:beforeOnLoad', function (event) {
+            if (event.detail.xhr.status === 400) {
+                // Display error message in the appropriate div
+                document.querySelector('#bill_item_form_errors').innerHTML = event.detail.xhr.responseText;
+            }
+        });
+    </script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

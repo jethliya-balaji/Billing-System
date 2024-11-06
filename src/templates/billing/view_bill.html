@@ -20,6 +20,7 @@ Bill No {{ bill.id }}
                 <div class="flex space-x-2 mt-2">
                     <a class="btn btn-sm btn-accent" href="{% url 'print_bill' bill.id %}" target="_blank">Print</a>
                     <a class="btn btn-sm btn-outline btn-primary" href="{% url 'edit_bill' bill.id %}">Edit</a>
+                    {% if request.user.is_superuser or perms.billing.delete_bill %}
                     <button class="btn btn-sm btn-outline btn-error" onclick="document.getElementById('modal-{{ bill.id }}').showModal()">Delete</button>
                     <dialog id="modal-{{ bill.id }}" class="modal">
                         <div class="modal-box">
@@ -34,6 +35,7 @@ Bill No {{ bill.id }}
                             </div>
                         </div>
                     </dialog>
+                    {% endif %}
                 </div>
             </div>
         </div>

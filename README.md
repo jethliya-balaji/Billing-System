@@ -68,12 +68,28 @@ pip install -r requirements.txt
 npm install
 ```
 
-5. Run database migrations
+5. Create .env file in the root directory
+```bash
+# Create .env file
+touch .env  # On Windows: type nul > .env
+
+# Add the following configuration to .env
+SECRET_KEY=django-insecure-your-secret-key-here
+DEBUG=TRUE
+ALLOWED_HOSTS=localhost 127.0.0.1
+```
+
+Note: You can generate a secure secret key using Python:
+```python
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+6. Run database migrations
 ```bash
 python manage.py migrate
 ```
 
-6. Create a superuser
+7. Create a superuser
 ```bash
 python manage.py createsuperuser
 ```

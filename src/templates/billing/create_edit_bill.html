@@ -54,6 +54,20 @@ Edit Bill
                     {% render_field bill_item_form.product class+="select select-bordered w-full" %}
                     {% render_field bill_item_form.custom_rate class+="input input-bordered w-full" placeholder="Rate"%}
                     {% render_field bill_item_form.quantity class+="input input-bordered w-full" placeholder="Quantity"%}
+                    
+                    <!-- Add discount section -->
+                    <div class="flex flex-col space-y-2">
+                        <div class="flex space-x-4">
+                            {% for value, label in bill_item_form.discount_type.field.choices %}
+                            <label class="label cursor-pointer space-x-2">
+                                <input type="radio" name="discount_type" value="{{ value }}"  class="radio"  {% if value == 0 %}checked{% endif %} onchange="toggleCustomDiscount(this)">
+                                <span class="label-text">{{ label }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        {% render_field bill_item_form.custom_discount hidden=True %}
+                    </div>
+                    
                     <input type="submit" value="Add Item" class="btn btn-outline btn-primary w-full text-lg">
                 </div>
             </form>
@@ -84,8 +98,19 @@ Edit Bill
                                     class="md:hidden font-bold">Quantity:</span>{{item.quantity }}</p>
                         </div>
                         <div class="w-full md:w-auto p-2">
-                            <p class="flex justify-between"><span
-                                    class="md:hidden font-bold">Price:</span>{{item.get_rate}}</p>
+                            <p class="flex justify-between">
+                                <span class="md:hidden font-bold">Price:</span>
+                                {{item.get_rate}}
+                                {% if item.discount_type != 0 %}
+                                    <span class="text-sm text-success">
+                                        {% if item.discount_type == -1 %}
+                                            ({{ item.custom_discount }}% off)
+                                        {% else %}
+                                            ({{ item.discount_type }}% off)
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="w-full md:w-auto p-2">
                             <p class="flex justify-between"><span class="md:hidden font-bold">Total:</span>{{item.total}}

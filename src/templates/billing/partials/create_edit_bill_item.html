@@ -9,7 +9,19 @@
         <p class="flex justify-between"><span class="md:hidden font-bold">Quantity:</span>{{ item.quantity }}</p>
     </div>
     <div class="w-full md:w-auto p-2">
-        <p class="flex justify-between"><span class="md:hidden font-bold">Price:</span>{{ item.get_rate }}</p>
+        <p class="flex justify-between">
+            <span class="md:hidden font-bold">Price:</span>
+            {{ item.get_rate }}
+            {% if item.discount_type != 0 %}
+                <span class="text-sm text-success">
+                    {% if item.discount_type == -1 %}
+                        ({{ item.custom_discount }}% off)
+                    {% else %}
+                        ({{ item.discount_type }}% off)
+                    {% endif %}
+                </span>
+            {% endif %}
+        </p>
     </div>
     <div class="w-full md:w-auto p-2">
         <p class="flex justify-between"><span class="md:hidden font-bold">Total:</span>{{ item.total }}</p>

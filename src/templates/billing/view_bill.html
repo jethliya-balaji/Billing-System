@@ -56,7 +56,18 @@ Bill No {{ bill.id }}
                     <tr class="hover:bg-base-200 transition-colors">
                         <td class="px-4 py-2">{{ item.product.name }}</td>
                         <td class="px-4 py-2">{{ item.quantity }}</td>
-                        <td class="px-4 py-2">{{ item.get_rate }}</td>
+                        <td class="px-4 py-2">
+                            {{ item.get_rate }}
+                            {% if item.discount_type != 0 %}
+                                <span class="text-sm text-success">
+                                    {% if item.discount_type == -1 %}
+                                        ({{ item.custom_discount }}% off)
+                                    {% else %}
+                                        ({{ item.discount_type }}% off)
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </td>
                         <td class="px-4 py-2">{{ item.total }}</td>
                     </tr>
                     {% endfor %}

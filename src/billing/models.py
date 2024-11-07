@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.db import transaction
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 
 
 class Product(models.Model):
@@ -52,11 +53,20 @@ class Bill(models.Model):
 
 
 class BillItem(models.Model):
+    DISCOUNT_CHOICES = [
+        (0, 'No Discount'),
+        (40, '40% Off'),
+        (50, '50% Off'),
+        (-1, 'Custom')  # -1 indicates custom discount
+    ]
+    
     bill = models.ForeignKey(Bill, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     total = models.DecimalField(max_digits=10, decimal_places=2, editable=False)
     custom_rate = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    discount_type = models.IntegerField(choices=DISCOUNT_CHOICES, default=0)
+    custom_discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, help_text="Enter discount percentage")
 
     def clean(self):
         if self.custom_rate is None and (self.product.default_rate is None or self.product.default_rate == 0):
@@ -67,7 +77,19 @@ class BillItem(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         rate = self.custom_rate if self.custom_rate is not None else self.product.default_rate
-        self.total = rate * self.quantity
+        
+        # Calculate discount
+        if self.discount_type == -1 and self.custom_discount:  # Custom discount
+            discount_percentage = self.custom_discount
+        else:  # Fixed discount or no discount
+            discount_percentage = Decimal(str(self.discount_type))  # Convert to Decimal
+        
+        # Apply discount
+        if discount_percentage > 0:
+            discount_multiplier = (Decimal('100') - discount_percentage) / Decimal('100')
+            rate = rate * discount_multiplier
+            
+        self.total = rate * Decimal(str(self.quantity))  # Convert quantity to Decimal
         super().save(*args, **kwargs)
         self.bill.update_total_amount()
 

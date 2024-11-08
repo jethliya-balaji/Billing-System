@@ -2,6 +2,18 @@
 
 A modern billing system built with Django, Tailwind CSS, and HTMX. The system features a responsive design with light/dark theme support and real-time updates.
 
+## Live Demo
+The system is live at: http://midknightdev.pythonanywhere.com/
+- Username: admin
+- Password: 123
+
+## Customization
+You can customize the business name throughout the application by replacing "Billing System" with your business name in the following files:
+- src/templates/billing/print_bill.html
+- src/templates/billing/base.html
+- src/templates/billing/partials/navbar.html
+- src/core/urls.py
+
 ## Features
 
 - 🛍️ Product management

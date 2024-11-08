@@ -22,6 +22,6 @@ urlpatterns = [
     path('', include('billing.urls')),
 ]
 
-admin.site.site_title = "Shraddha Gift and Toys"
-admin.site.site_header = "Shraddha Gift and Toys"
+admin.site.site_title = "Billing System"
+admin.site.site_header = "Billing System"
 admin.site.index_title = "Admin Panel"

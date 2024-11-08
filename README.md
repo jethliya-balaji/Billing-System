@@ -1,4 +1,4 @@
-# Shraddha Gift and Toys - Billing System
+# Billing System
 
 A modern billing system built with Django, Tailwind CSS, and HTMX. The system features a responsive design with light/dark theme support and real-time updates.
 
@@ -16,6 +16,10 @@ A modern billing system built with Django, Tailwind CSS, and HTMX. The system fe
 - 🧾 Bill management
   - Create new bills
   - Add multiple items with custom rates
+  - Flexible discount options:
+    - Pre-defined discounts (40%, 50%)
+    - Custom percentage discount
+    - Per-item discount application
   - Print bills in a clean format
   - Edit existing bills
   - Delete bills (with proper permissions)
@@ -180,6 +184,10 @@ Theme preferences are automatically saved to localStorage and persists across se
 ### Bill Management
 - Create new bills with customer details
 - Add multiple items with option for custom rates
+- Flexible discount options:
+  - Pre-defined discounts (40%, 50%)
+  - Custom percentage discount
+  - Per-item discount application
 - Print bills in a clean, professional format
 - Edit existing bills (own bills for salesperson, all bills for admin)
 - Delete bills with proper permissions

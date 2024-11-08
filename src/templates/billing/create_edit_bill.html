@@ -13,7 +13,7 @@ Edit Bill
 {% include "billing/partials/navbar.html" %}
 
 <div class="px-4 py-6">
-    <div class="max-w-6xl mx-auto bg-base-200 p-6 rounded-lg">
+    <div class=" mx-auto bg-base-200 p-6 rounded-lg">
         <div class="flex justify-between items-center mb-6 text-xl flex-wrap-reverse">
             <div>
                 <p>Bill ID: {{ bill.id }}</p>
@@ -76,10 +76,11 @@ Edit Bill
             <!-- Items List Using Divs Instead of Table -->
             <div class="space-y-4 text-xl">
                 <!-- Header -->
-                <div class="hidden md:grid md:grid-cols-5 font-bold p-2 rounded-md">
+                <div class="hidden md:grid md:grid-cols-6 font-bold p-2 rounded-md">
                     <div>Item</div>
                     <div>Quantity</div>
                     <div>Price</div>
+                    <div>Discount</div>
                     <div>Total</div>
                     <div></div>
                 </div>
@@ -88,7 +89,7 @@ Edit Bill
                 <div id="bill_items" class="space-y-2">
                     {% for item in bill.items.all %}
                     <div
-                        class="p-2 bg-base-100 rounded-md shadow-md flex flex-col md:grid md:grid-cols-5 md:gap-2 items-center">
+                        class="p-2 bg-base-100 rounded-md shadow-md flex flex-col md:grid md:grid-cols-6 md:gap-2 items-center">
                         <div class="w-full md:w-auto p-2">
                             <p class="flex justify-between"><span
                                     class="md:hidden font-bold">Item:</span>{{item.product.name }}</p>
@@ -101,15 +102,21 @@ Edit Bill
                             <p class="flex justify-between">
                                 <span class="md:hidden font-bold">Price:</span>
                                 {{item.get_rate}}
+                            </p>
+                        </div>
+                        <div class="w-full md:w-auto p-2">
+                            <p class="flex justify-between"><span class="md:hidden font-bold">Discount:</span>
                                 {% if item.discount_type != 0 %}
-                                    <span class="text-sm text-success">
-                                        {% if item.discount_type == -1 %}
-                                            ({{ item.custom_discount }}% off)
-                                        {% else %}
-                                            ({{ item.discount_type }}% off)
-                                        {% endif %}
-                                    </span>
-                                {% endif %}
+                                <span>
+                                    {% if item.discount_type == -1 %}
+                                        {{ item.custom_discount }}%
+                                    {% else %}
+                                        {{ item.discount_type }}%
+                                    {% endif %}
+                                </span>
+                            {% else %}
+                                <span>-</span>
+                            {% endif %}
                             </p>
                         </div>
                         <div class="w-full md:w-auto p-2">

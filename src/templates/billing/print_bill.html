@@ -152,6 +152,7 @@
                         <th>Item Description</th>
                         <th>Quantity</th>
                         <th>Price (₹)</th>
+                        <th>Discount</th>
                         <th>Total (₹)</th>
                     </tr>
                 </thead>
@@ -160,16 +161,16 @@
                     <tr>
                         <td>{{ item.product.name }}</td>
                         <td>{{ item.quantity }}</td>
+                        <td>{{ item.get_rate }}</td>
                         <td>
-                            {{ item.get_rate }}
                             {% if item.discount_type != 0 %}
-                                <span style="color: #2f855a; font-size: 0.9em;">
-                                    {% if item.discount_type == -1 %}
-                                        ({{ item.custom_discount }}% off)
-                                    {% else %}
-                                        ({{ item.discount_type }}% off)
-                                    {% endif %}
-                                </span>
+                                {% if item.discount_type == -1 %}
+                                    {{ item.custom_discount }}%
+                                {% else %}
+                                    {{ item.discount_type }}%
+                                {% endif %}
+                            {% else %}
+                                -
                             {% endif %}
                         </td>
                         <td>{{ item.total }}</td>
@@ -178,7 +179,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3">Estimated Total Amount</td>
+                        <td colspan="4">Estimated Total Amount</td>
                         <td>₹ {{ bill.total_amount }}</td>
                     </tr>
                 </tfoot>

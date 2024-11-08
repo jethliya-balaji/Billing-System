@@ -859,6 +859,33 @@ html {
   justify-content: center;
 }
 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 200ms;
+  height: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding-left: 0.563rem;
+  padding-right: 0.563rem;
+  border-radius: var(--rounded-badge, 1.9rem);
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+}
+
 @media (hover:hover) {
   .label a:hover {
     --tw-text-opacity: 1;
@@ -1660,6 +1687,15 @@ html {
   --alert-bg-mix: var(--fallback-b1,oklch(var(--b1)/1));
 }
 
+.badge-ghost {
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+}
+
 .btm-nav > *.disabled,
     .btm-nav > *[disabled] {
   pointer-events: none;
@@ -2086,6 +2122,13 @@ details.collapse summary::-webkit-details-marker {
   gap: 1rem;
 }
 
+.label-text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+}
+
 .input input {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
@@ -2248,6 +2291,12 @@ details.collapse summary::-webkit-details-marker {
 .menu :where(li > .menu-dropdown-toggle.menu-dropdown-show):after {
   transform: rotate(225deg);
   margin-top: 0;
+}
+
+.mockup-phone .display {
+  overflow: hidden;
+  border-radius: 40px;
+  margin-top: -25px;
 }
 
 .mockup-browser .mockup-browser-toolbar .input {
@@ -2817,6 +2866,10 @@ details.collapse summary::-webkit-details-marker {
   border-bottom-left-radius: 0px;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .collapse {
   visibility: collapse;
 }
@@ -2979,6 +3032,10 @@ details.collapse summary::-webkit-details-marker {
   border-collapse: collapse;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -3029,6 +3086,12 @@ details.collapse summary::-webkit-details-marker {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
@@ -3279,6 +3342,11 @@ details.collapse summary::-webkit-details-marker {
   color: rgb(220 38 38 / var(--tw-text-opacity));
 }
 
+.text-success {
+  --tw-text-opacity: 1;
+  color: var(--fallback-su,oklch(var(--su)/var(--tw-text-opacity)));
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -3397,6 +3465,10 @@ details.collapse summary::-webkit-details-marker {
 
   .md\:grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .md\:flex-row {

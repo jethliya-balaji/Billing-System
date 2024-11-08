@@ -1,7 +1,7 @@
 <span id="bill-total" hx-swap-oob="true">{{ bill.total_amount }}</span>
 
 {% for item in items %}
-<div class="p-2 bg-base-100 rounded-md shadow-md flex flex-col md:grid md:grid-cols-5 md:gap-2 items-center">
+<div class="p-2 bg-base-100 rounded-md shadow-md flex flex-col md:grid md:grid-cols-6 md:gap-2 items-center">
     <div class="w-full md:w-auto p-2">
         <p class="flex justify-between"><span class="md:hidden font-bold">Item:</span>{{ item.product.name }}</p>
     </div>
@@ -11,16 +11,22 @@
     <div class="w-full md:w-auto p-2">
         <p class="flex justify-between">
             <span class="md:hidden font-bold">Price:</span>
-            {{ item.get_rate }}
+            {{item.get_rate}}
+        </p>
+    </div>
+    <div class="w-full md:w-auto p-2">
+        <p class="flex justify-between"><span class="md:hidden font-bold">Discount:</span>
             {% if item.discount_type != 0 %}
-                <span class="text-sm text-success">
-                    {% if item.discount_type == -1 %}
-                        ({{ item.custom_discount }}% off)
-                    {% else %}
-                        ({{ item.discount_type }}% off)
-                    {% endif %}
-                </span>
-            {% endif %}
+            <span>
+                {% if item.discount_type == -1 %}
+                    {{ item.custom_discount }}%
+                {% else %}
+                    {{ item.discount_type }}%
+                {% endif %}
+            </span>
+        {% else %}
+            <span>-</span>
+        {% endif %}
         </p>
     </div>
     <div class="w-full md:w-auto p-2">

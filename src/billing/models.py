@@ -12,6 +12,7 @@ from decimal import Decimal
 class Product(models.Model):
     name = models.CharField(max_length=100)
     default_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    barcode = models.CharField(max_length=50, unique=True, null=True, blank=True, help_text="Product barcode for scanning")
 
     def __str__(self):
         return f"{self.name} - {self.default_rate}"

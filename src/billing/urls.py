@@ -33,4 +33,7 @@ urlpatterns = [
 
     # Load Messages
     path('messages/', views.load_messages, name='load_messages'),
+
+    # NEW: Barcode API endpoint
+    path('api/product-by-barcode/<str:barcode>/', views.get_product_by_barcode, name='product_by_barcode'),
 ]

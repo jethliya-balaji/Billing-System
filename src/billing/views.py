@@ -13,13 +13,14 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
+from django.http import JsonResponse
 
 
 from django_htmx.http import HttpResponseClientRedirect
 
 from .filters import BillFilter
 from .forms import BillForm, BillItemForm
-from .models import Bill, BillItem
+from .models import Bill, BillItem, Product
 
 # Create your views here.
 
@@ -243,3 +244,17 @@ def print_bill(request, bill_id):
 @require_GET
 def load_messages(request):
     return render(request, 'billing/partials/messages.html')
+
+@login_required
+@require_GET
+def get_product_by_barcode(request, barcode):
+    """API endpoint to get a product by its barcode"""
+    try:
+        product = Product.objects.get(barcode=barcode)
+        return JsonResponse({
+            'product_id': product.id,
+            'name': product.name,
+            'default_rate': float(product.default_rate) if product.default_rate else None
+        })
+    except Product.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)

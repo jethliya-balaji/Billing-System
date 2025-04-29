@@ -20,6 +20,7 @@ You can customize the business name throughout the application by replacing "Bil
   - Add, edit products through admin panel
   - Set default rates for products
   - Product search with Select2
+  - **NEW: Barcode scanning** for quick product selection
 - 📊 Sales dashboard with period-wise summaries
   - 7 days sales summary
   - Monthly sales summary
@@ -43,6 +44,7 @@ You can customize the business name throughout the application by replacing "Bil
 - 📱 Responsive design
 - ⚡ Real-time updates using HTMX
 - 🔐 User authentication and authorization
+- 📷 Barcode scanning with device camera
 
 ## Tech Stack
 
@@ -51,7 +53,8 @@ You can customize the business name throughout the application by replacing "Bil
   - Tailwind CSS 3.4
   - DaisyUI 4.12
   - HTMX 1.18
-  - jQuery 3.7 + Select2
+  - Web Barcode Detector API
+
 - **Database**: SQLite (default Django DB)
 
 ## Prerequisites
@@ -59,6 +62,7 @@ You can customize the business name throughout the application by replacing "Bil
 - Python 3.x
 - Node.js and npm
 - Git
+- Modern browser that supports BarcodeDetector API
 
 ## Installation
 
@@ -152,7 +156,9 @@ Billing-System/
 │   │   ├── css/
 │   │   │   └── tailwind-output.css   # Compiled Tailwind CSS
 │   │   ├── js/
-│   │   │   └── script.js        # Custom JavaScript
+│   │   │   ├── script.js        # Custom JavaScript
+│   │   │   ├── barcode-scanner.js  # Barcode scanning functionality
+│   │   │   └── create_edit_bill_page.js  # Bill page specific logic
 │   │   ├── htmx.min.js          # HTMX library
 │   │   └── src/
 │   │       └── tailwind-input.css    # Tailwind source
@@ -192,6 +198,14 @@ Theme preferences are automatically saved to localStorage and persists across se
 - Add and edit products through Django admin interface
 - Set default rates for products
 - Products appear in Select2 dropdown during bill creation
+- **Scan product barcodes** using device camera for quick selection
+
+### Barcode Scanning
+- Uses Web BarcodeDetector API for real-time barcode scanning
+- Compatible with various barcode formats including Code 128, EAN-13, UPC-A, and QR codes
+- Integrates with product selection during bill creation
+- Camera access with mobile-friendly interface
+- Automatic product selection upon successful scan
 
 ### Bill Management
 - Create new bills with customer details
@@ -227,6 +241,10 @@ Theme preferences are automatically saved to localStorage and persists across se
   - Edit their own bills
   - Print bills
 
+## Browser Compatibility
+
+The barcode scanning feature requires a browser that supports the BarcodeDetector API
+
 ## Contributing
 
 1. Fork the repository
@@ -246,6 +264,7 @@ MIT License
 - [Tailwind CSS](https://tailwindcss.com/) for styling
 - [Select2](https://select2.org/) for enhanced select inputs
 - [Django](https://www.djangoproject.com/) for the web framework
+- [Web BarcodeDetector API](https://developer.mozilla.org/en-US/docs/Web/API/BarcodeDetector) for barcode scanning capabilities
 
 ## Support
 

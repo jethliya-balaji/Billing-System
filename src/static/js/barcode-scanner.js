@@ -2,8 +2,12 @@
 let videoElement = null;
 let stream = null;
 let barcodeDetector = null;
+let onBarcodeDetectedCallback = null;
 
-function openBarcodeScanner() {
+function openBarcodeScanner(callback) {
+    // Store the callback function
+    onBarcodeDetectedCallback = callback;
+
     // Prevent multiple camera instances
     if (videoElement) {
         closeBarcodeScanner();
@@ -94,8 +98,10 @@ function openBarcodeScanner() {
                 const statusText = document.getElementById('scan-status');
                 statusText.textContent = `Barcode detected: ${barcode}`;
                 
-                // Find the corresponding product by barcode and select it
-                selectProductByBarcode(barcode);
+                // Call the callback function with the detected barcode
+                if (onBarcodeDetectedCallback) {
+                    onBarcodeDetectedCallback(barcode);
+                }
                 
                 setTimeout(() => {
                     closeBarcodeScanner();
@@ -125,14 +131,11 @@ function closeBarcodeScanner() {
 
     videoElement = null;
     barcodeDetector = null;
+    onBarcodeDetectedCallback = null;
 }
 
+
 function selectProductByBarcode(barcode) {
-    // You'll need to have a mapping of barcodes to product IDs
-    // This function will fetch the product details based on the barcode
-    // and select the corresponding option in the dropdown
-    
-    // Make an AJAX request to Django to get product by barcode
     fetch(`/api/product-by-barcode/${barcode}/`)
         .then(response => response.json())
         .then(data => {

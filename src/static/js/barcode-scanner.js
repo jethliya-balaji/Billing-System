@@ -67,8 +67,8 @@ function openBarcodeScanner(callback) {
     navigator.mediaDevices.getUserMedia({
         video: {
             facingMode: "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
+            width: { ideal: 250 },
+            height: { ideal: 380 }
         }
     })
     .then(mediaStream => {

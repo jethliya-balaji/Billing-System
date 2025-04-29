@@ -1,5 +1,6 @@
 {% extends "billing/base.html" %}
 {% load widget_tweaks %}
+{% load static %}
 {% block title %}
 {% if request.resolver_match.url_name == 'create_bill' %}
 Create Bill
@@ -147,5 +148,9 @@ Edit Bill
             </div>
     </div>
 </div>
+
+{% block scripts %}
+<script src="{% static 'js/create_edit_bill_page.js' %}"></script>
+{% endblock %}
 
 {% endblock %}

@@ -20,7 +20,10 @@ You can customize the business name throughout the application by replacing "Bil
   - Add, edit products through admin panel
   - Set default rates for products
   - Product search with Select2
-  - **NEW: Barcode scanning** for quick product selection
+  - **Enhanced barcode scanning** for quick product selection:
+    - Scan barcodes from create/edit bill page
+    - **NEW: Quick product lookup from dashboard**
+    - **NEW: Product details modal for scanned items**
 - 📊 Sales dashboard with period-wise summaries
   - 7 days sales summary
   - Monthly sales summary
@@ -44,7 +47,11 @@ You can customize the business name throughout the application by replacing "Bil
 - 📱 Responsive design
 - ⚡ Real-time updates using HTMX
 - 🔐 User authentication and authorization
-- 📷 Barcode scanning with device camera
+- 📷 **Enhanced barcode scanning capabilities**:
+  - Product selection during bill creation
+  - **NEW: Product information lookup from dashboard**
+  - Mobile-friendly camera interface
+  - Support for multiple barcode formats
 
 ## Tech Stack
 
@@ -156,8 +163,8 @@ Billing-System/
 │   │   ├── css/
 │   │   │   └── tailwind-output.css   # Compiled Tailwind CSS
 │   │   ├── js/
-│   │   │   ├── script.js        # Custom JavaScript
-│   │   │   ├── barcode-scanner.js  # Barcode scanning functionality
+│   │   │   ├── script.js        # General JavaScript
+│   │   │   ├── barcode-scanner.js  # Barcode scanning functionality 
 │   │   │   └── create_edit_bill_page.js  # Bill page specific logic
 │   │   ├── htmx.min.js          # HTMX library
 │   │   └── src/
@@ -198,14 +205,17 @@ Theme preferences are automatically saved to localStorage and persists across se
 - Add and edit products through Django admin interface
 - Set default rates for products
 - Products appear in Select2 dropdown during bill creation
-- **Scan product barcodes** using device camera for quick selection
+- **Enhanced barcode scanning** using device camera for quick selection and lookup
 
 ### Barcode Scanning
 - Uses Web BarcodeDetector API for real-time barcode scanning
 - Compatible with various barcode formats including Code 128, EAN-13, UPC-A, and QR codes
-- Integrates with product selection during bill creation
+- **Two scanning modes**:
+  - Product selection during bill creation
+  - **NEW: Product information lookup from dashboard**
 - Camera access with mobile-friendly interface
-- Automatic product selection upon successful scan
+- Optimized video resolution settings for better scanning performance
+- Improved callback pattern for flexible implementation
 
 ### Bill Management
 - Create new bills with customer details
@@ -221,6 +231,8 @@ Theme preferences are automatically saved to localStorage and persists across se
 
 ### Dashboard Features
 - View comprehensive sales summaries
+- **NEW: Quick product lookup via barcode scanner**
+- **NEW: Product details modal for displaying scanned product information**
 - Filter bills by:
   - Date
   - Salesperson (admin only)
@@ -240,6 +252,14 @@ Theme preferences are automatically saved to localStorage and persists across se
   - View their own bills
   - Edit their own bills
   - Print bills
+
+### Code Organization
+- **Improved JavaScript organization**:
+  - Core UI functionality in script.js
+  - Billing page logic in dedicated create_edit_bill_page.js
+  - Barcode scanning functionality in barcode-scanner.js
+- Reduced dependencies with optimized script loading
+- Better template structure with proper script blocks
 
 ## Browser Compatibility
 

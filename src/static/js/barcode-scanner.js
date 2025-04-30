@@ -134,7 +134,7 @@ function closeBarcodeScanner() {
     onBarcodeDetectedCallback = null;
 }
 
-
+// Select product by barcode on create/edit bill page
 function selectProductByBarcode(barcode) {
     fetch(`/api/product-by-barcode/${barcode}/`)
         .then(response => response.json())
@@ -154,4 +154,43 @@ function selectProductByBarcode(barcode) {
             console.error('Error fetching product:', error);
             alert('Error finding product. Please try again or select manually.');
         });
+}
+
+// Show product details in modal when barcode is scanned on dashboard
+function showProductDetailsFromBarcode(barcode) {
+    fetch(`/api/product-by-barcode/${barcode}/`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Product not found');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Populate and show modal
+            const contentDiv = document.getElementById('product-details-content');
+            contentDiv.innerHTML = `
+                <div class="grid grid-cols-2 gap-2 text-lg">
+                    <div class="font-bold">Name:</div>
+                    <div>${data.name}</div>
+                    <div class="font-bold">Price:</div>
+                    <div>₹ ${data.default_rate !== null ? data.default_rate : 'Not set'}</div>
+                    <div class="font-bold">Barcode:</div>
+                    <div>${barcode}</div>
+                </div>
+            `;
+            
+            // Show modal using DaisyUI's modal system
+            const modal = document.getElementById('product-details-modal');
+            modal.classList.add('modal-open');
+        })
+        .catch(error => {
+            alert('Product not found for this barcode or error occurred.');
+            console.error('Error:', error);
+        });
+}
+
+// Close product details modal on dashboard
+function closeProductModal() {
+    const modal = document.getElementById('product-details-modal');
+    modal.classList.remove('modal-open');
 }

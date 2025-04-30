@@ -1,5 +1,6 @@
 {% extends "billing/base.html" %}
 {% load widget_tweaks %}
+{% load static %}
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
@@ -30,6 +31,28 @@
     </div>
 </div>
 {% endif %}
+
+<div class="flex flex-col p-4 lg:hidden">
+    <!-- Create bill button -->
+    <a href="{% url 'create_bill'  %}" class="btn btn-primary mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Create bill
+    </a>
+
+    <!-- Barcode Scanner Button -->
+    <button 
+        id="dashboard-barcode-scanner-btn" 
+        onclick="openBarcodeScanner(showProductDetailsFromBarcode)" 
+        class="btn  btn-accent"
+        title="Scan Product Barcode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upc-scan" viewBox="0 0 16 16">
+            <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+        </svg>
+        Scan Barcode
+    </button>
+</div>
 
 <!-- Recent Bills Section -->
 <div class="px-4 py-4">
@@ -84,4 +107,29 @@
         </div>
     </div>
 </div>
+
+<!-- Product Details Modal -->
+<div id="product-details-modal" class="modal">
+    <div class="modal-box">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-base-content">Product Details</h2>
+            <button onclick="closeProductModal()" class="btn btn-ghost btn-sm btn-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div id="product-details-content" class="space-y-4 text-base-content">
+            <!-- Content will be populated dynamically -->
+        </div>
+    </div>
+    <div class="modal-backdrop" onclick="closeProductModal()">
+        <button>close</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/barcode-scanner.js' %}"></script>
 {% endblock %}

@@ -5,7 +5,9 @@ from .models import Product, Bill, BillItem
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'default_rate']
+    list_display = ['name', 'default_rate', 'barcode']
+    search_fields = ['name', 'barcode']
+    readonly_fields = ['barcode']
 
 class BillItemInline(admin.TabularInline):
     model = BillItem

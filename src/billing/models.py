@@ -12,7 +12,34 @@ from decimal import Decimal
 class Product(models.Model):
     name = models.CharField(max_length=100)
     default_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
-    barcode = models.CharField(max_length=50, unique=True, null=True, blank=True, help_text="Product barcode for scanning")
+    purchase_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    stock = models.PositiveIntegerField(default=0, null=True, blank=True)
+    barcode = models.CharField(max_length=50, unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Auto-generate barcode if not provided
+        if not self.barcode:
+            self.barcode = self.generate_barcode()
+        super().save(*args, **kwargs)
+    
+    def generate_barcode(self):
+        """Generate a unique barcode for the product"""
+        # Get the current date in YYMMDD format
+        from django.utils import timezone
+        date_prefix = timezone.now().strftime("%y%m%d")
+        
+        # Generate a random 6-digit number
+        random_part = ''.join(random.choices(string.digits, k=6))
+        
+        # Combine to form a barcode: date + random digits
+        barcode = f"{date_prefix}{random_part}"
+        
+        # Ensure uniqueness
+        while Product.objects.filter(barcode=barcode).exists():
+            random_part = ''.join(random.choices(string.digits, k=6))
+            barcode = f"{date_prefix}{random_part}"
+            
+        return barcode    
 
     def __str__(self):
         return f"{self.name} - {self.default_rate}"
@@ -21,8 +48,7 @@ class Product(models.Model):
 class Bill(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
     customer_name = models.CharField(max_length=100, null=True, blank=True)
-    mobile_number = models.CharField(max_length=10, validators=[
-                                     RegexValidator(r'^\d{10}$')], null=True, blank=True)
+    mobile_number = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{10}$')], null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(
         max_digits=10, decimal_places=2, editable=False, default=0)
@@ -69,14 +95,14 @@ class BillItem(models.Model):
     discount_type = models.IntegerField(choices=DISCOUNT_CHOICES, default=0)
     custom_discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, help_text="Enter discount percentage")
 
-    def clean(self):
+    def clean_custom_rate(self):
         if self.custom_rate is None and (self.product.default_rate is None or self.product.default_rate == 0):
             raise ValidationError(
                 "Default rate is not provided in the product. Please provide a custom rate or set a default rate."
             )
 
     def save(self, *args, **kwargs):
-        self.clean()
+        self.clean_custom_rate()
         rate = self.custom_rate if self.custom_rate is not None else self.product.default_rate
         
         # Calculate discount

@@ -254,7 +254,10 @@ def get_product_by_barcode(request, barcode):
         return JsonResponse({
             'product_id': product.id,
             'name': product.name,
-            'default_rate': float(product.default_rate) if product.default_rate else None
+            'default_rate': float(product.default_rate) if product.default_rate else None,
+            'purchase_rate': float(product.purchase_rate) if product.purchase_rate else None,
+            'stock': product.stock,
+            'barcode': product.barcode,
         })
     except Product.DoesNotExist:
         return JsonResponse({'error': 'Product not found'}, status=404)

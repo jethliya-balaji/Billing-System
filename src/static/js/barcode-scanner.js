@@ -168,19 +168,24 @@ function showProductDetailsFromBarcode(barcode) {
         .then(data => {
             // Populate and show modal
             const contentDiv = document.getElementById('product-details-content');
+            
+            // Check if user is superuser from the data attribute
+            const isSuperuser = document.body.getAttribute('data-is-superuser') === 'true';
+            
             contentDiv.innerHTML = `
                 <div class="grid grid-cols-2 gap-2 text-lg">
                     <div class="font-bold">Name:</div>
                     <div>${data.name}</div>
                     <div class="font-bold">Rate:</div>
                     <div>${data.default_rate}</div>
-                    <div class="font-bold">Purchase Rate:</div>
-                    <div>${data.purchase_rate}</div>
+                    ${isSuperuser ? `
+                        <div class="font-bold">Purchase Rate:</div>
+                        <div>${data.purchase_rate}</div>
+                    ` : ''}
                     <div class="font-bold">Stock:</div>
                     <div>${data.stock}</div>
                     <div class="font-bold">Barcode:</div>
                     <div>${data.barcode}</div>
-                    
                 </div>
             `;
             

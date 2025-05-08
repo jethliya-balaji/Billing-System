@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}">
 </head>
 
-<body>
+<body data-is-superuser="{{ request.user.is_superuser|yesno:'true,false' }}">
     <div id="message-container">
         {% include "billing/partials/messages.html" %}
     </div>

@@ -16,12 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('billing.urls')),
 ]
 
-admin.site.site_title = "Billing System"
-admin.site.site_header = "Billing System"
+admin.site.site_title = settings.BUSINESS_NAME
+admin.site.site_header = settings.BUSINESS_NAME
 admin.site.index_title = "Admin Panel"

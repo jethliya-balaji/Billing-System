@@ -75,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.business_name_settings',
             ],
         },
     },
@@ -140,6 +141,9 @@ STATIC_ROOT = BASE_DIR.parent / 'local-cdn' / 'static'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Business Settings
+BUSINESS_NAME = os.environ.get('BUSINESS_NAME', 'Billing System')
 
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'

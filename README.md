@@ -8,11 +8,21 @@ The system is live at: http://midknightdev.pythonanywhere.com/
 - Password: 123
 
 ## Customization
-You can customize the business name throughout the application by replacing "Billing System" with your business name in the following files:
-- src/templates/billing/print_bill.html
-- src/templates/billing/base.html
-- src/templates/billing/partials/navbar.html
-- src/core/urls.py
+You can customize the business name throughout the application by setting the `BUSINESS_NAME` environment variable in your `.env` file:
+
+```bash
+# Add to your .env file
+BUSINESS_NAME="Your Business Name"
+```
+
+This will automatically update the business name across:
+- Admin interface
+- Navigation bar
+- Page titles
+- Printed bills
+- All other relevant places in the application
+
+If `BUSINESS_NAME` is not set, it defaults to "Billing System".
 
 ## Features
 
@@ -104,6 +114,7 @@ touch .env  # On Windows: type nul > .env
 SECRET_KEY=django-insecure-your-secret-key-here
 DEBUG=TRUE
 ALLOWED_HOSTS=localhost 127.0.0.1
+BUSINESS_NAME="Your Business Name"  # Optional: defaults to "Billing System"
 ```
 
 Note: You can generate a secure secret key using Python:

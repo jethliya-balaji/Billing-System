@@ -206,6 +206,8 @@ Theme preferences are automatically saved to localStorage and persists across se
 - Set default rates for products
 - Products appear in Select2 dropdown during bill creation
 - **Enhanced barcode scanning** using device camera for quick selection and lookup
+- **Auto-barcode generation** for new products
+- **Inventory tracking** with stock management
 
 ### Barcode Scanning
 - Uses Web BarcodeDetector API for real-time barcode scanning

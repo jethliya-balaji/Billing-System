@@ -172,10 +172,15 @@ function showProductDetailsFromBarcode(barcode) {
                 <div class="grid grid-cols-2 gap-2 text-lg">
                     <div class="font-bold">Name:</div>
                     <div>${data.name}</div>
-                    <div class="font-bold">Price:</div>
-                    <div>₹ ${data.default_rate !== null ? data.default_rate : 'Not set'}</div>
+                    <div class="font-bold">Rate:</div>
+                    <div>${data.default_rate}</div>
+                    <div class="font-bold">Purchase Rate:</div>
+                    <div>${data.purchase_rate}</div>
+                    <div class="font-bold">Stock:</div>
+                    <div>${data.stock}</div>
                     <div class="font-bold">Barcode:</div>
-                    <div>${barcode}</div>
+                    <div>${data.barcode}</div>
+                    
                 </div>
             `;
             

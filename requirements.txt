@@ -1,5 +1,5 @@
 asgiref==3.8.1
-Django==4.2
+Django==4.2.21
 django-extensions==3.2.3
 django-filter==24.3
 django-htmx==1.18.0
